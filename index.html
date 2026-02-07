@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>For Miinu 💖</title>
+
+  <style>
+    body {
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+      transition: background 1s;
+    }
+
+    .card {
+      background: white;
+      padding: 45px;
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+      max-width: 420px;
+      position: relative;
+      z-index: 2;
+    }
+
+    h1 {
+      color: #ff4d6d;
+      margin-bottom: 15px;
+    }
+
+    .poem {
+      font-size: 16px;
+      color: #444;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .name {
+      color: #ff4d6d;
+      font-weight: bold;
+    }
+
+    .buttons {
+      position: relative;
+      height: 70px;
+    }
+
+    button {
+      padding: 12px 28px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      position: absolute;
+      transition: 0.3s;
+    }
+
+    #yes {
+      background-color: #ff4d6d;
+      color: white;
+      left: 25%;
+    }
+
+    #no {
+      background-color: #e0e0e0;
+      color: #333;
+      left: 55%;
+    }
+
+    /* Floating hearts */
+    .heart {
+      position: absolute;
+      bottom: -20px;
+      color: rgba(255, 77, 109, 0.6);
+      font-size: 20px;
+      animation: floatUp 6s linear infinite;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-100vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card" id="card">
+    <h1 id="title"></h1>
+    <div class="poem" id="poem"></div>
+
+    <div class="buttons">
+      <button id="yes">Yes 🌹</button>
+      <button id="no">No</button>
+    </div>
+  </div>
+
+  <!-- Music (only Valentine’s Day) -->
+  <audio id="music" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9c1b3d8fa3.mp3" type="audio/mpeg">
+  </audio>
+
+<script>
+  const today = new Date();
+  const month = today.getMonth() + 1;
+  const date = today.getDate();
+
+  const title = document.getElementById("title");
+  const poem = document.getElementById("poem");
+  const card = document.getElementById("card");
+
+  let currentDay = null;
+
+  const days = {
+    7: {
+      title: "A Rose for You, Miinu 🌹",
+      text: "This rose carries more than petals,<br>it carries every thought of you.<br><br>Miinu, will you be my Valentine? 💖",
+      yes: "I knew you’d say yes 🌹<br><br>Happy Rose Day, Miinu ❤️"
+    },
+    8: {
+      title: "Miinu, One Question 💍",
+      text: "Some questions change everything.<br><br>Miinu, will you be my Valentine? ❤️",
+      yes: "So this is a yes 💍<br><br>You just made my day, Miinu 💖"
+    },
+    9: {
+      title: "Chocolate Day 🍫",
+      text: "Life is sweeter with chocolate,<br>but sweeter still with you.<br><br>Be my Valentine, Miinu 😍",
+      yes: "Sweet like chocolate 🍫<br><br>Happy Chocolate Day, Miinu 💕"
+    },
+    10: {
+      title: "Teddy Day 🧸",
+      text: "If I could, I’d send you a teddy<br>to hug whenever I’m not there.<br><br>Miinu, will you be my Valentine? 💖",
+      yes: "Here’s a warm teddy hug 🧸<br><br>For you, Miinu ❤️"
+    },
+    11: {
+      title: "Promise Day 🤞",
+      text: "A promise to care,<br>a promise to choose you.<br><br>Miinu, be my Valentine ❤️",
+      yes: "A promise starts today 🤞<br><br>I choose you, Miinu 💖"
+    },
+    12: {
+      title: "Hug Day 🤗",
+      text: "If hugs could speak,<br>mine would say everything.<br><br>Miinu, will you be my Valentine? 💕",
+      yes: "Sending you the biggest hug 🤗<br><br>Happy Hug Day, Miinu ❤️"
+    },
+    13: {
+      title: "Kiss Day 😘",
+      text: "Some feelings don’t need words.<br><br>Miinu, be my Valentine ❤️",
+      yes: "A kiss to seal this yes 😘<br><br>For you, Miinu 💖"
+    },
+    14: {
+      title: "Happy Valentine’s Day ❤️",
+      text: "Today and every day,<br>I choose you.<br><br>Miinu, be my Valentine 💘",
+      yes: "Today, tomorrow, always ❤️<br><br>Happy Valentine’s Day, Miinu 💖"
+    }
+  };
+
+  // Default
+  title.innerHTML = "For You, Miinu 💖";
+  poem.innerHTML = "No matter the day,<br>this page was made with you in mind 🌹";
+
+  if (month === 2 && days[date]) {
+    currentDay = days[date];
+    title.innerHTML = currentDay.title;
+    poem.innerHTML = currentDay.text;
+  }
+
+  // No button runs
+  const noBtn = document.getElementById("no");
+  noBtn.addEventListener("mouseover", () => {
+    const x = Math.random() * 300 - 150;
+    const y = Math.random() * 200 - 100;
+    noBtn.style.transform = `translate(${x}px, ${y}px)`;
+  });
+
+  // Yes click → day-wise message
+  document.getElementById("yes").onclick = () => {
+    if (currentDay) {
+      poem.innerHTML = currentDay.yes;
+      document.querySelector(".buttons").style.display = "none";
+    }
+  };
+</script>
+
+
+</body>
+</html>
